@@ -77,7 +77,7 @@ def validate_format(observers):
 
 def validate_input():
     try:
-        input_msg = 'What data for would you like to display?'
+        input_msg = 'What data for would you like to display? '
         data = int(input(input_msg))
         valid_input = True
     except ValueError:
@@ -101,36 +101,36 @@ def validate_opt(operations):
 
 
 def main():
-    df = DefaultFormatter('test1')
-    print(df)
-
-    print()
-    hf = HexFormatterObs()
-    df.add(hf)
-    df.data = 3
-    print(df)
-
-    print()
-    bf = BinaryFormatterObs()
-    df.add(bf)
-    df.data = 21
-    print(df)
-
-    print()
-    df.remove(hf)
-    df.data = 40
-    print(df)
-
-    print()
-    df.remove(hf)
-    df.add(bf)
-
-    df.data = 'hello'
-    print(df)
-
-    print()
-    df.data = 15.8
-    print(df)
+    # df = DefaultFormatter('test1')
+    # print(df)
+    #
+    # print()
+    # hf = HexFormatterObs()
+    # df.add(hf)
+    # df.data = 3
+    # print(df)
+    #
+    # print()
+    # bf = BinaryFormatterObs()
+    # df.add(bf)
+    # df.data = 21
+    # print(df)
+    #
+    # print()
+    # df.remove(hf)
+    # df.data = 40
+    # print(df)
+    #
+    # print()
+    # df.remove(hf)
+    # df.add(bf)
+    #
+    # df.data = 'hello'
+    # print(df)
+    #
+    # print()
+    # df.data = 15.8
+    # print(df)
 
     # df = DefaultFormatter('test1')
     # print(df)
@@ -154,6 +154,44 @@ def main():
     #     valid_input, data = validate_input()
     # df.data = data
     # print(df)
+
+    OPERATION_IN_DESC = 'What operation for would you like, [a]ttach / [d]etach an observer, ' \
+                        'or [m]odify the value? (type "quit" to exit) '
+
+    OBSERVERS_IN_DESC = 'What format for would you like, [h]exFormatterObs, [b]inaryFormatterObs, ' \
+                        'or [o]ctFormatterObs? '
+
+    df = DefaultFormatter('test1')
+    print(df)
+
+    # TODO: Errors in menu flow
+    while True:
+        operation_picked = None
+        operations = dict(a=df.add, d=df.remove)
+        while not operation_picked:
+            operation_picked = input(OPERATION_IN_DESC)
+
+            if operation_picked == 'quit':
+                print('bye')
+                return
+
+            observers_picked = None
+            observers = dict(h=HexFormatterObs, b=BinaryFormatterObs, o=OctFormatterObs)
+            while observers_picked not in observers.keys():
+                observers_picked = input(OBSERVERS_IN_DESC)
+
+                try:
+                    observer = observers[observers_picked]()
+                    if operation_picked in operations.keys():
+                        operations[operation_picked](observer)
+                    elif operation_picked == 'm':
+                        valid_input = False
+                        while not valid_input:
+                            valid_input, data = validate_input()
+                        df.data = data
+                    print(df)
+                except KeyError as err:
+                    print(f'Incorrect option: {observers_picked}')
 
 
 if __name__ == '__main__':
