@@ -34,3 +34,13 @@ I posted any problems on <b>Issues</b> of his repo and recorded below.
     RxPy 3.2.0 made changes that cancelled Observer class. Therefore in chapter14 code need significant update.
     
     Reflexed in my code in chapter14
+
+
+3. chapter15/populate_db.py
+    
+    In both setup_db and add_quotes. db = sqlite3.connect('data/quotes.sqlite3') can't declared inside try/except statement. Doing so will raise
+
+    UnboundLocalError: local variable 'db' referenced before assignment
+
+    pull db declaration outside try
+
